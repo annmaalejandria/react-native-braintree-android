@@ -40,21 +40,20 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
     private BraintreePackage mBraintreePackage; // <--
 
     @Override
+    protected List<ReactPackage> getPackages() {
+        // ...
+        mBraintreePackage = new BraintreePackage(this);
+        ReactPackage packages[] = new ReactPackage[]{
+            new MainReactPackage(),
+            // ...
+            mBraintreePackage, // <--
+        };
+        return Arrays.<ReactPackage>asList(packages);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // ...
-        mBraintreePackage = new BraintreePackage(this); // <--
-
-        mReactInstanceManager = ReactInstanceManager.builder()
-                .setApplication(getApplication())
-                .setBundleAssetName("index.android.bundle")
-                .setJSMainModuleName("index.android")
-                .addPackage(new MainReactPackage())
-                // ...
-                .addPackage(mBraintreePackage) // <--
-                .setUseDeveloperSupport(BuildConfig.DEBUG)
-                .setInitialLifecycleState(LifecycleState.RESUMED)
-                .build();
         // ...
     }
 
@@ -63,8 +62,8 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
     @Override
     public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        mBraintreePackage.handleActivityResult(requestCode, resultCode, data);
+        // ...
+        mBraintreePackage.handleActivityResult(requestCode, resultCode, data); // <--
     }
 }
 ```
